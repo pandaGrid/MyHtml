@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ajax</title>
+	<script src="jquery.min.js"></script>
+	<script src="jquery.lazyload.js"></script>
+
+	<style>
+		table{ border-collapse: collapse; width: 500px;}
+		td,th{border: 1px solid #666; text-align:center;}
+		.tableTitle{background: #abcdef;}
+		p{margin: 0;padding-top: 10px;}
+		.ImgLoading{margin:10px 0;}
+	</style>
+</head>
+<body>
+
+	=============ajax请求数据================<br/>
+
+	<input type="submit" id='ajax' value="ajax远程请求数据" />
+	<img src='ajax-loader.gif' id='loading' style='display:none' >
+	<div class='con'></div>
+
+	=============全选/反选/全不选================<br/>
+
+
+	<div id='aa'>
+		<input type='checkbox'  />苹果 
+		<input type='checkbox'  />梨子 
+		<input type='checkbox'  />香蕉
+	</div>
+
+	<p>
+		<input type='button' id='all' value='全选'>
+		<input type='button' id='noall' value='反选'>
+		<input type='button' id='no-all' value='全不选'>
+	</p> 
+	
+	=============本地搜索================<br/>		
+
+
+	<div class='bd'>
+	<table >
+		<tr class='tableTitle'>
+			<th>姓名</th>
+			<th>性别</th>
+			<th>年龄</th>
+			<th>电话</th>
+		</tr>
+		<tr>
+			<td>张三</td>
+			<td>男</td>
+			<td>20</td>
+			<td>13800013800</td>
+		</tr>
+		<tr>
+			<td>李四</td>
+			<td>男</td>
+			<td>21</td>
+			<td>10086</td>
+		</tr>
+		<tr>
+			<td>王五</td>
+			<td>女</td>
+			<td>28</td>
+			<td>13521563251</td>
+		</tr>
+		<tr>
+			<td>赵六</td>
+			<td>男</td>
+			<td>23</td>
+			<td>18635245123</td>
+		</tr>
+	</table>
+	<p>
+		table表单数据本地搜索：
+		<input type='text' class='search'/>
+		<input type='submit' class='sub' value='搜索'/>
+	</p>
+	</div>
+
+	<div class='ImgLoading'>
+			<img class="lazy" data-original="images/bmw_m1_hood.jpg" width="765" height="574" alt="BMW M1 Hood">
+			<img class="lazy" data-original="images/bmw_m1_side.jpg" width="765" height="574" alt="BMW M1 Side">
+			<img class="lazy" data-original="images/viper_1.jpg" width="765" height="574" alt="Viper 1">
+			<img class="lazy" data-original="images/viper_corner.jpg" width="765" height="574" alt="Viper Corner">
+			<img class="lazy" data-original="images/bmw_m3_gt.jpg" width="765" height="574" alt="BMW M3 GT">
+			<img class="lazy" data-original="images/corvette_pitstop.jpg" width="765" height="574" alt="Corvette Pitstop"
+	</div>
+
+	<div id='div1'>
+		<div id='div1'>
+			<p>
+				<a>hello</a>
+			</p>
+		</div>
+	</div>
+
+	
+	<script>
+	$(function(){
+
+		  $(".ImgLoading>img").lazyload({effect: "fadeIn"});
+		   // $(".ImgLoading>img").lazyload({ threshold : 200 }); 距离图片200px的下面的图片开始加载
+
+		//本地搜索  //延迟执行
+		// $('.search').keyup(function(){
+		// 	setTimeout(function(){
+		// 		var search = $('.search').val();	
+		// 		$('table tr:not(".tableTitle")').hide().filter(':contains("'+search+'")').show();
+		// 	},1000);
+		// });
+
+		//本地搜索 
+		// $('.search').keyup(function(){
+		// 	var search = $('.search').val();	
+		// 	$('table tr:not(".tableTitle")').hide().filter(':contains("'+search+'")').show();
+		// });
+
+		$('.sub').click(function(){
+			var search = $('.search').val();	
+			$('table tr:not(".tableTitle")').hide().filter(':contains("'+search+'")').show();
+		});
+
+		// $('.search').keyup(function(){
+		// 	var search = $('.search').val();	
+		// 	if (search) {
+		// 		$('table tr').filter(':contains("'+search+'")').show().siblings('tr:not(".tableTitle")').hide();
+		// 	}else{
+		// 		$('table tr').show();
+		// 	};
+		// });
+
+
+		var sg = $('#aa :checkbox');  
+		var all = $('#all');
+		var noall = $('#noall');
+		var no_all = $('#no-all');
+
+		all.click(function() {  //全选
+			sg.attr('checked',true);
+		});
+
+		noall.click(function(){  //反选
+			sg.each(function() {
+				$(this).attr('checked',!$(this).attr('checked'))
+			});
+		});
+
+		no_all.click(function() { //全不选
+			sg.attr('checked',false);
+		});
+
+
+		$('#ajax').click(function(){
+
+			if ($('.con').text()) {
+	 			alert('已经有数据了')
+			 }else{
+			 	$.ajax({
+					url:'ajax.php?data'+Math.random(),
+					type:'get',
+					success:function(data){
+						$('.con').html(data);
+					}
+				})
+			 }
+		});
+
+
+		$('#loading').ajaxStart(function() {
+			$(this).show();
+		});
+
+		$('#loading').ajaxStop(function() {
+			$(this).hide();
+		});
+
+		
+		$(document).ajaxError(function() {
+			$('div').text('ajax请求错误');
+		});
+
+
+
+	})
+
+	</script>
+</body>
+</html>
