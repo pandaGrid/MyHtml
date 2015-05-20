@@ -12,6 +12,7 @@
 		.tableTitle{background: #abcdef;}
 		p{margin: 0;padding-top: 10px;}
 		.ImgLoading{margin:10px 0;}
+		p.fade{display: none;}
 	</style>
 </head>
 <body>
@@ -80,6 +81,8 @@
 	</p>
 	</div>
 
+	<p class='fade'>哈哈哈</p>
+
 	<div class='ImgLoading'>
 			<img class="lazy" data-original="images/bmw_m1_hood.jpg" width="765" height="574" alt="BMW M1 Hood">
 			<img class="lazy" data-original="images/bmw_m1_side.jpg" width="765" height="574" alt="BMW M1 Side">
@@ -100,6 +103,11 @@
 	
 	<script>
 	$(function(){
+
+		$('p.fade').fadeToggle(3000,function(){
+			alert('p.fade淡入成功之后再控制台输出：hello！');
+			console.log('hello');
+		})
 
 		  $(".ImgLoading>img").lazyload({effect: "fadeIn"});
 		   // $(".ImgLoading>img").lazyload({ threshold : 200 }); 距离图片200px的下面的图片开始加载
